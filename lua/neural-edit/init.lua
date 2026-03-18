@@ -126,7 +126,7 @@ function M.explain_code()
       vim.schedule(function()
         spinner:stop()
         if validate_response(response) then
-          local response_lines = vim.split(extract_code_from_response(response.text), "\n")
+          local response_lines = vim.split(response.text or "", "\n")
           popup.open_result_window(response_lines)
         end
       end)
