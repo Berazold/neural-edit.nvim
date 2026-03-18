@@ -1,15 +1,15 @@
 local M = {}
 
-local provider = require "aichat.providers.request"
-local builtin_providers = require "aichat.providers.builtin"
+local provider = require("neural-edit.providers.request")
+local builtin_providers = require("neural-edit.providers.builtin")
 
-local selection = require "aichat.utils.selection"
-local prompts = require "aichat.utils.prompts"
+local selection = require("neural-edit.utils.selection")
+local prompts = require("neural-edit.utils.prompts")
 
-local popup = require "aichat.ui.popup"
-local Spinner = require("aichat.ui.spinner").Spinner
+local popup = require("neural-edit.ui.popup")
+local Spinner = require("neural-edit.ui.spinner").Spinner
 
-local config = require "aichat.config"
+local config = require("neural-edit.config")
 
 local M = {}
 
@@ -19,13 +19,13 @@ function M.setup(opts)
   config.providers = vim.tbl_deep_extend("force", builtin_providers, opts.providers or {})
   if opts.default_provider then config.default_provider = opts.default_provider end
 
-  require("aichat.ui.spinner").setup(opts.spinner)
+  require("neural-edit.ui.spinner").setup(opts.spinner)
 end
 
 local function extract_code_from_response(text)
   if not text or text == "" then return "" end
 
-  local code_block = text:match "```%w*\n(.-)\n```"
+  local code_block = text:match("```%w*\n(.-)\n```")
 
   if code_block then
     return code_block
@@ -90,7 +90,7 @@ function M.generate_code()
     local payload = { { role = "user", content = prompts.prepare_codegen_prompt(prompt) } }
     spinner:start()
 
-    if not prompt or prompt:match "^%s*$" then
+    if not prompt or prompt:match("^%s*$") then
       vim.notify("Error: an empty prompt was provided", vim.log.levels.ERROR)
       return
     end
