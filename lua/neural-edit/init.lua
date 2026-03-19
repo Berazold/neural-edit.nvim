@@ -48,7 +48,7 @@ local function validate_response(response)
   return true
 end
 
-function M.refactor_selection()
+function M.refactor_selection(opts)
   local selected_text = selection.get_visual_selection()
 
   local bufnr = vim.api.nvim_get_current_buf()
@@ -58,7 +58,7 @@ function M.refactor_selection()
     local payload = { { role = "user", content = prompts.prepare_refactor_prompt(prompt, selected_text.text) } }
     spinner:start()
 
-    provider.send_request(payload, function(response)
+    provider.send_request(payload, opts, function(response)
       vim.schedule(function()
         spinner:stop()
         if validate_response(response) then
@@ -80,7 +80,7 @@ function M.refactor_selection()
   end)
 end
 
-function M.generate_code()
+function M.generate_code(opts)
   local cursor_pos = vim.api.nvim_win_get_cursor(0)
   local cursor_row = cursor_pos[1] - 1
   local bufnr = vim.api.nvim_get_current_buf()
@@ -95,7 +95,7 @@ function M.generate_code()
       return
     end
 
-    provider.send_request(payload, function(response)
+    provider.send_request(payload, opts, function(response)
       vim.schedule(function()
         spinner:stop()
 
@@ -112,7 +112,7 @@ function M.generate_code()
   end)
 end
 
-function M.explain_code()
+function M.explain_code(opts)
   local selected_text = selection.get_visual_selection()
 
   local bufnr = vim.api.nvim_get_current_buf()
@@ -122,7 +122,7 @@ function M.explain_code()
     local payload = { { role = "user", content = prompts.prepare_explain_prompt(prompt, selected_text.text) } }
     spinner:start()
 
-    provider.send_request(payload, function(response)
+    provider.send_request(payload, opts, function(response)
       vim.schedule(function()
         spinner:stop()
         if validate_response(response) then

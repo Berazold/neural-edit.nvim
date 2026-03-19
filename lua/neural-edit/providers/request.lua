@@ -3,7 +3,7 @@ local config = require("neural-edit.config")
 
 local M = {}
 
-function M.send_request(messages, callback, opts)
+function M.send_request(messages, opts, callback)
   opts = opts or {}
 
   local provider_name = opts.provider or config.default_provider
